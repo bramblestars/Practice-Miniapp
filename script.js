@@ -56,19 +56,19 @@ const initialFacts = [
   
   async function loadFacts() {
     const res = await fetch(
-      "https://hwtkikrqvnsrrpkjrytv.supabase.co/rest/v1/facts",
+      "https://cleaiojocybgxbxhrzqx.supabase.co/rest/v1/facts",
       {
         headers: {
           apikey:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3dGtpa3Jxdm5zcnJwa2pyeXR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njg3NTk3ODUsImV4cCI6MTk4NDMzNTc4NX0.l_PGJRds8Lmg17Pn7eqNwFqYWH4rST2gVlTeGCfKTjk",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsZWFpb2pvY3liZ3hieGhyenF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDEyNDI1MjUsImV4cCI6MjAxNjgxODUyNX0.BKnOlOS283NiNAWjwTlD9CUGJpixu6BUTpjl2qSLgvc",
           authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3dGtpa3Jxdm5zcnJwa2pyeXR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njg3NTk3ODUsImV4cCI6MTk4NDMzNTc4NX0.l_PGJRds8Lmg17Pn7eqNwFqYWH4rST2gVlTeGCfKTjk",
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsZWFpb2pvY3liZ3hieGhyenF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDEyNDI1MjUsImV4cCI6MjAxNjgxODUyNX0.BKnOlOS283NiNAWjwTlD9CUGJpixu6BUTpjl2qSLgvc",
         },
       }
     );
     const data = await res.json();
     // console.log(data);
-    // const filteredData = data.filter((fact) => fact.category === "technology");
+    //const filteredData = data.filter((fact) => fact.category === "technology");
   
     createFactsList(data);
   }
