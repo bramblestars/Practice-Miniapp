@@ -1,8 +1,7 @@
 import Header from "./Header.js";
 import CategoryFilter from "./CategoryFilters.js";
 import Form from "./Form.js";
-import Fact from "./Fact.js";
-import FactsList from "./FactsList.js"
+import FactsList from "./factslist/FactsList.js"
 import "./style.css";
 
 function App() {

@@ -1,3 +1,5 @@
+import { CATEGORIES } from "./Constants.js";
+
 function CategoryFilter() {
     return (
         <aside>
@@ -5,22 +7,16 @@ function CategoryFilter() {
             <li className="category">
               <button className="btn btn-all-categories">All</button>
             </li>
-            <li className="category">
-              <button
-                className="btn btn-category"
-                style={{ backgroundColor: "#3b82f6" }}
-              >
-                Technology
-              </button>
-            </li>
-            <li className="category">
-              <button
-                className="btn btn-category"
-                style={{ backgroundColor: "#16a34a" }}
-              >
-                Science
-              </button>
-            </li>
+            { Object.keys(CATEGORIES).map((cat) => 
+                <li className="category">
+                    <button
+                    className="btn btn-category"
+                    style={{ backgroundColor: CATEGORIES[cat] }}
+                    >
+                    { cat }
+                    </button>
+                </li>)}
+            
           </ul>
         </aside>
     );
