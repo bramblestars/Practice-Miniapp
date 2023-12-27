@@ -21,7 +21,7 @@ async function loadFacts() {
     // const data = await res.json();
 }
 
-function FactsList({ isLoading, factList }) {
+function FactsList({ isLoading, factList, setFacts }) {
 
     if (factList.length == 0) {
         return (
@@ -36,7 +36,7 @@ function FactsList({ isLoading, factList }) {
             <ul className="facts-list">
                 {
                     // show all facts if no category filter selected, or filter facts based on selected category
-                    factList.map((fact) => <Fact factObj={fact}/>)
+                    factList.map((fact) => <Fact factObj={fact} setFacts={setFacts}/>)
                 }
             </ul>
             <p>

@@ -46,13 +46,14 @@ function App() {
     return (
         <>
             <Header showFormFn={ () => setShowForm((show) => !show)}/>
-            {showForm ? <Form setShowForm={setShowForm} setFactFn={setFacts}/> : null}
+            {showForm ? <Form setShowForm={setShowForm} setFactFn={setFacts} currentCategory={currCategory}/> : null}
             <main className="main">
 
                 <CategoryFilter setCategory={setCurrCategory}/>
                 <FactsList 
                     isLoading={isLoading}
-                    factList={facts}/>
+                    factList={facts}
+                    setFacts={setFacts}/>
                 
             </main>
             

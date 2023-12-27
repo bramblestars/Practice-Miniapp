@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { CATEGORIES } from "./Constants.js";
 
+import supabase from './supabase';
+
 function isValidHttpUrl(str) {
     let url;
     try {
@@ -16,35 +18,34 @@ function isValidForm(text, source, category) {
     return text && isValidHttpUrl(source) && category && text.length <= 200;
 }
 
-function Form({ setShowForm, setFactFn }) {
+function Form({ setShowForm, setFactFn, currentCategory }) {
     const [text, setText] = useState("");
     const [source, setSource] = useState("");
     const [category, setCategory] = useState("");
+    const [isUploading, setIsUploading] = useState(false);
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         // Prevent browser reload
         e.preventDefault();
 
         if (isValidForm(text, source, category)) {
-            // Create a new fact object
-            const newFact = {
-                id: Math.round(Math.random() * 10000),
-                text: text,
-                source: source,
-                category: category,
-                votesInteresting: 0,
-                votesMindblowing: 0,
-                votesFalse: 0,
-                createdIn: new Date().getFullYear()
+
+            setIsUploading(true);
+
+            const { data: newFact, error} = await supabase
+                .from("facts")
+                .insert([{text, source, category}])
+                .select();
+
+            if (category == currentCategory && !error) {
+                setFactFn((facts) => [newFact[0], ...facts]);
             }
-
-            // Add new fact to the UI (add fact to state)
-            setFactFn((facts) => [newFact, ...facts]);
-
+        
             // Reset input fields
             setText("");
             setSource("");
             setCategory("");
+            setIsUploading(false);
 
             // Close the form
             setShowForm(false);
@@ -58,21 +59,24 @@ function Form({ setShowForm, setFactFn }) {
             type="text" 
             placeholder="Share a fact with the world..." 
             value={text}
-            onChange={(e) => setText(e.target.value)}/>
+            onChange={(e) => setText(e.target.value)}
+            disabled={isUploading}/>
         <span>{200 - text.length}</span>
         <input 
             type="text" 
             placeholder="Trustworthy source..." 
             value={source}
-            onChange={(e) => setSource(e.target.value)}/>
+            onChange={(e) => setSource(e.target.value)}
+            disabled={isUploading}/>
         <select
             value={category}
-            onChange={(e) => setCategory(e.target.value)}>
+            onChange={(e) => setCategory(e.target.value)}
+            disabled={isUploading}>
           <option value="">Choose category:</option>
           { Object.keys(CATEGORIES).map((cat) => 
             <option value={cat}>{cat[0].toUpperCase() + cat.slice(1)}</option>)}
         </select>
-        <button className="btn btn-large" onClick={handleSubmit}>Post</button>
+        <button className="btn btn-large" onClick={handleSubmit} diabled={isUploading}>Post</button>
       </form>
     );
 }
