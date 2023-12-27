@@ -1,55 +1,59 @@
-import { useState } from 'react'
-import Header from "./Header.js";
-import CategoryFilter from "./CategoryFilters.js";
-import Form from "./Form.js";
-import FactsList from "./factslist/FactsList.js"
+import { useEffect, useState } from 'react'
+import Header from "./Header";
+import CategoryFilter from "./CategoryFilters";
+import Form from "./Form";
+import FactsList from "./factslist/FactsList"
 import "./style.css";
 
-const initialFacts = [
-    {
-      id: 1,
-      text: "React is being developed by Meta (formerly facebook)",
-      source: "https://opensource.fb.com/",
-      category: "technology",
-      votesInteresting: 24,
-      votesMindblowing: 9,
-      votesFalse: 4,
-      createdIn: 2021,
-    },
-    {
-      id: 2,
-      text: "Millennial dads spend 3 times as much time with their kids than their fathers spent with them. In 1982, 43% of fathers had never changed a diaper. Today, that number is down to 3%",
-      source:
-        "https://www.mother.ly/parenting/millennial-dads-spend-more-time-with-their-kids",
-      category: "society",
-      votesInteresting: 11,
-      votesMindblowing: 2,
-      votesFalse: 0,
-      createdIn: 2019,
-    },
-    {
-      id: 3,
-      text: "Lisbon is the capital of Portugal",
-      source: "https://en.wikipedia.org/wiki/Lisbon",
-      category: "society",
-      votesInteresting: 8,
-      votesMindblowing: 3,
-      votesFalse: 1,
-      createdIn: 2015,
-    },
-];
+import supabase from './supabase';
 
 function App() {
     const [showForm, setShowForm] = useState(false);
-    const [facts, setFacts] = useState(initialFacts);
+    const [facts, setFacts] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [currCategory, setCurrCategory] = useState("");
+    
+    useEffect(function () {
+        async function getFacts() {
+            setIsLoading(true);
+
+            let query = supabase.from("facts").select("*");
+
+            if (currCategory)
+            {
+                query = query.eq("category", currCategory);
+            }
+
+            let { data: facts, error } = await query
+            .order("votesinteresting", { ascending: false })
+            .limit("50");
+
+            if (!error) {
+                setFacts(facts);
+                setIsLoading(false);
+            } 
+
+            else {
+                alert("There was a problem retrieving the data!");
+            }
+            
+        }
+        
+        getFacts();
+        
+    }, [currCategory])
 
     return (
         <>
             <Header showFormFn={ () => setShowForm((show) => !show)}/>
             {showForm ? <Form setShowForm={setShowForm} setFactFn={setFacts}/> : null}
             <main className="main">
-                <CategoryFilter />
-                <FactsList initialFacts={facts}/>
+
+                <CategoryFilter setCategory={setCurrCategory}/>
+                <FactsList 
+                    isLoading={isLoading}
+                    factList={facts}/>
+                
             </main>
             
         </>

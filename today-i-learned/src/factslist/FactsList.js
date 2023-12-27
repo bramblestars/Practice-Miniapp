@@ -1,7 +1,7 @@
+import { useEffect } from "react";
+
 import Fact from "./Fact.js";
-
-
-
+import Loader from '../Loader';
 
 
 loadFacts();
@@ -21,17 +21,27 @@ async function loadFacts() {
     // const data = await res.json();
 }
 
-function FactsList({ initialFacts }) {
-    const facts = initialFacts;
+function FactsList({ isLoading, factList }) {
+
+    if (factList.length == 0) {
+        return (
+            <p className="message">
+                No facts for this category yet! Create the first one :) 
+            </p>)
+    }
 
     return (
+        isLoading ? <Loader /> :
         <section>
             <ul className="facts-list">
                 {
-                    facts.map((fact) => <Fact factObj={fact}/>)
+                    // show all facts if no category filter selected, or filter facts based on selected category
+                    factList.map((fact) => <Fact factObj={fact}/>)
                 }
             </ul>
-            <p>There are {facts.length} facts in the database. Add your own!</p>
+            <p>
+                There are {factList.length} facts in the database. Add your own!
+            </p>
         </section>
     );
 }

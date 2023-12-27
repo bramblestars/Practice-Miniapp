@@ -17,9 +17,9 @@ function Fact(props) {
                     {fact.category}
                 </span>
                 <div className="vote-buttons">
-                <button>👍 {fact.votesInteresting}</button>
-                <button>🤯 {fact.votesMindblowing}</button>
-                <button>⛔️ {fact.votesFalse}</button>
+                <button>👍 {fact.votesinteresting}</button>
+                <button>🤯 {fact.votesmindblowing}</button>
+                <button>⛔️ {fact.votesfalse}</button>
                 </div>
             </li>)
 }
